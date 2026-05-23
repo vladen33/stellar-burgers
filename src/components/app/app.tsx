@@ -16,11 +16,8 @@ import { AppHeader } from '@components';
 import { Preloader } from '@ui';
 import { Route, Routes } from 'react-router-dom';
 import { useEffect } from 'react';
-import store, { useDispatch } from '../../services/store';
-import {
-  ingredientsSelector,
-  fetchIngredients
-} from '../../services/ingredientsSlice';
+import { useDispatch, useSelector } from '../../services/store';
+import { fetchIngredients } from '../../services/ingredientsSlice';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -29,9 +26,11 @@ const App = () => {
     dispatch(fetchIngredients());
   }, []);
   /** TODO: взять переменные из стора */
-  const isIngredientsLoading = store.getState().ingredients?.loading;
-  const ingredients = store.getState().ingredients?.ingredients;
-  const error = store.getState().ingredients?.error;
+  const isIngredientsLoading = useSelector(
+    (state) => state.ingredients.loading
+  );
+  const ingredients = useSelector((state) => state.ingredients.ingredients);
+  const error = useSelector((state) => state.ingredients.error);
 
   return (
     <div className={styles.app}>
