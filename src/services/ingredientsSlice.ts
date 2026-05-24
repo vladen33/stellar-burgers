@@ -14,7 +14,7 @@ const initialState: TIngredientsState = {
   error: null
 };
 
-export const fetchIngredients = createAsyncThunk(
+export const fetchAllIngredients = createAsyncThunk(
   'ingredients/fetchAll',
   getIngredientsApi
 );
@@ -28,16 +28,16 @@ const ingredientsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchIngredients.pending, (state) => {
+      .addCase(fetchAllIngredients.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchIngredients.rejected, (state, action) => {
+      .addCase(fetchAllIngredients.rejected, (state, action) => {
         state.loading = false;
         state.error =
-          action.error.message ?? 'Ошибка при загрузке списка ингредиентов.';
+          action.error.message || 'Ошибка при загрузке списка ингредиентов.';
       })
-      .addCase(fetchIngredients.fulfilled, (state, action) => {
+      .addCase(fetchAllIngredients.fulfilled, (state, action) => {
         state.loading = false;
         state.ingredients = action.payload;
       });
@@ -45,4 +45,4 @@ const ingredientsSlice = createSlice({
 });
 
 export const ingredientsReducer = ingredientsSlice.reducer;
-//export const { ingredientsSelector } = ingredientsSlice.selectors;
+export const { ingredientsSelector } = ingredientsSlice.selectors;

@@ -17,13 +17,13 @@ import { Preloader } from '@ui';
 import { Route, Routes } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from '../../services/store';
-import { fetchIngredients } from '../../services/ingredientsSlice';
+import { fetchAllIngredients } from '../../services/ingredientsSlice';
 
 const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchIngredients());
+    dispatch(fetchAllIngredients());
   }, []);
   /** TODO: взять переменные из стора */
   const isIngredientsLoading = useSelector(
@@ -31,7 +31,7 @@ const App = () => {
   );
   const ingredients = useSelector((state) => state.ingredients.ingredients);
   const error = useSelector((state) => state.ingredients.error);
-
+  console.log('ingredients[] = ', ingredients);
   return (
     <div className={styles.app}>
       <AppHeader />
@@ -48,19 +48,6 @@ const App = () => {
         </Route>
         <Route path='*' element={<NotFound404 />} />
       </Routes>
-      {/*{isIngredientsLoading ? (*/}
-      {/*  <Preloader />*/}
-      {/*) : error ? (*/}
-      {/*  <div className={`${styles.error} text text_type_main-medium pt-4`}>*/}
-      {/*    {error}*/}
-      {/*  </div>*/}
-      {/*) : ingredients.length > 0 ? (*/}
-      {/*  <ConstructorPage />*/}
-      {/*) : (*/}
-      {/*  <div className={`${styles.title} text text_type_main-medium pt-4`}>*/}
-      {/*    Нет игредиентов*/}
-      {/*  </div>*/}
-      {/*)}*/}
     </div>
   );
 };
