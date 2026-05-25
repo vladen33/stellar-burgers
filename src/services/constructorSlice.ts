@@ -1,4 +1,4 @@
-import { TConstructorIngredient } from '@utils-types';
+import { TConstructorIngredient, TIngredient } from '@utils-types';
 import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
 
 type TConstructorState = {
@@ -23,7 +23,7 @@ const constructorSlice = createSlice({
           state.ingredients.push(action.payload);
         }
       },
-      prepare: (ingredient: TConstructorIngredient) => {
+      prepare: (ingredient: TIngredient) => {
         const id = nanoid();
         return { payload: { ...ingredient, id } };
       }
@@ -33,8 +33,16 @@ const constructorSlice = createSlice({
         (ingredient) => ingredient.id !== action.payload
       );
     },
-    moveUpIngredient: (state, action) => {},
-    moveDownIngredient: (state, action) => {}
+    moveUpIngredient: (state, action) => {
+      const currentIngredient = state.ingredients[action.payload];
+      state.ingredients[action.payload] = state.ingredients[action.payload - 1];
+      state.ingredients[action.payload - 1] = currentIngredient;
+    },
+    moveDownIngredient: (state, action: PayloadAction<number>) => {
+      const currentIngredient = state.ingredients[action.payload];
+      state.ingredients[action.payload] = state.ingredients[action.payload + 1];
+      state.ingredients[action.payload + 1] = currentIngredient;
+    }
   }
 });
 
