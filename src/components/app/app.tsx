@@ -26,15 +26,12 @@ const App = () => {
     dispatch(fetchAllIngredients());
   }, []);
   /** TODO: взять переменные из стора */
-  const isIngredientsLoading = useSelector(
-    (state) => state.ingredients.loading
-  );
+  const isLoading = useSelector((state) => state.ingredients.loading);
   const ingredients = useSelector((state) => state.ingredients.ingredients);
   const error = useSelector((state) => state.ingredients.error);
   return (
     <div className={styles.app}>
       <AppHeader />
-
       <Routes>
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />
