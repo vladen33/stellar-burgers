@@ -9,7 +9,7 @@ const maxIngredients = 6;
 
 export const OrderCard: FC<OrderCardProps> = memo(({ order }) => {
   const location = useLocation();
-
+  console.log('OrderCard = ', order);
   /** TODO: взять переменную из стора */
   const ingredients: TIngredient[] = [];
 
@@ -44,7 +44,7 @@ export const OrderCard: FC<OrderCardProps> = memo(({ order }) => {
       date
     };
   }, [order, ingredients]);
-
+  console.log('orderInfo = ', orderInfo);
   if (!orderInfo) return null;
 
   return (

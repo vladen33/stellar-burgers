@@ -12,7 +12,7 @@ import {
 import '../../index.css';
 import styles from './app.module.css';
 
-import { AppHeader } from '@components';
+import { AppHeader, IngredientDetails, OrderInfo } from '@components';
 import { Preloader } from '@ui';
 import { Route, Routes } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -31,7 +31,6 @@ const App = () => {
   );
   const ingredients = useSelector((state) => state.ingredients.ingredients);
   const error = useSelector((state) => state.ingredients.error);
-  console.log('ingredients[] = ', ingredients);
   return (
     <div className={styles.app}>
       <AppHeader />
@@ -46,6 +45,9 @@ const App = () => {
         <Route path='/profile' element={<Profile />}>
           <Route path='orders' element={<ProfileOrders />} />
         </Route>
+        <Route path='/feed/:number' element={<OrderInfo />} />
+        <Route path='/ingredients/:id' element={<IngredientDetails />} />
+        <Route path='/profile/orders/:number' element={<OrderInfo />} />
         <Route path='*' element={<NotFound404 />} />
       </Routes>
     </div>
