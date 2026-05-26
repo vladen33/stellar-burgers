@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
-import { loginUserApi, TRegisterData } from '@api';
-import { setCookie } from '../utils/cookie';
+import { loginUserApi, logoutApi, TRegisterData } from '@api';
+import { deleteCookie, setCookie } from '../utils/cookie';
 // import { getUserApi } from '@api';
 
 export const loginUser = createAsyncThunk(
@@ -21,6 +21,16 @@ export const loginUser = createAsyncThunk(
     return data.user;
   }
 );
+
+export const logoutUser = createAsyncThunk('user/logoutUser', async () => {
+  const data = await logoutApi();
+  console.log('>> 1 >> logOutUser - ', data);
+  if (data) {
+    deleteCookie('accessToken');
+    localStorage.removeItem('refreshToken');
+  }
+  console.log('>> 2 >> logOutUser - ', data);
+});
 
 type TUserState = {
   userData: TUser | null;
@@ -48,12 +58,25 @@ export const userSlice = createSlice({
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = true;
-        state.error = action.error.message || 'Ошибка логина/пароля';
+        state.error = action.error.message || 'Ошибка Login';
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.userData = action.payload;
         state.loading = false;
         state.isAuthChecked = true;
+      })
+      .addCase(logoutUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(logoutUser.rejected, (state, action) => {
+        state.loading = true;
+        state.error = action.error.message || 'Ошибка Logout';
+      })
+      .addCase(logoutUser.fulfilled, (state, action) => {
+        state.userData = null;
+        state.loading = false;
+        state.isAuthChecked = false;
       });
   }
 });
