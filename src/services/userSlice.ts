@@ -53,30 +53,34 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.pending, (state) => {
+        state.isAuthChecked = false;
         state.loading = true;
         state.error = null;
       })
       .addCase(loginUser.rejected, (state, action) => {
-        state.loading = true;
+        state.isAuthChecked = true;
+        state.loading = false;
         state.error = action.error.message || 'Ошибка Login';
       })
       .addCase(loginUser.fulfilled, (state, action) => {
+        state.isAuthChecked = true;
         state.userData = action.payload;
         state.loading = false;
-        state.isAuthChecked = true;
       })
       .addCase(logoutUser.pending, (state) => {
+        state.isAuthChecked = false;
         state.loading = true;
         state.error = null;
       })
       .addCase(logoutUser.rejected, (state, action) => {
+        state.isAuthChecked = false;
         state.loading = true;
         state.error = action.error.message || 'Ошибка Logout';
       })
       .addCase(logoutUser.fulfilled, (state, action) => {
+        state.isAuthChecked = false;
         state.userData = null;
         state.loading = false;
-        state.isAuthChecked = false;
       });
   }
 });
