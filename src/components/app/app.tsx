@@ -18,6 +18,7 @@ import { Route, Routes } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from '../../services/store';
 import { fetchAllIngredients } from '../../services/ingredientsSlice';
+import { ProtectedRoute } from '../ui/routes/protected-route';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -39,9 +40,16 @@ const App = () => {
         <Route path='/register' element={<Register />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/reset-password' element={<ResetPassword />} />
-        <Route path='/profile' element={<Profile />}>
-          <Route path='orders' element={<ProfileOrders />} />
-        </Route>
+        <Route
+          path='/profile'
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route path='orders' element={<ProfileOrders />} />
+
         <Route path='/feed/:number' element={<OrderInfo />} />
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
         <Route path='/profile/orders/:number' element={<OrderInfo />} />
