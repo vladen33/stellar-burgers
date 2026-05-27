@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TUser } from 'src/utils/types';
-import { loginUserApi, logoutApi, TRegisterData } from '@api';
+import { getUserApi, loginUserApi, logoutApi, TRegisterData } from '@api';
 import { deleteCookie, setCookie } from '../../utils/cookie';
 // import { getUserApi } from '@api';
 
@@ -11,11 +11,9 @@ export const loginUser = createAsyncThunk(
     { rejectWithValue }
   ) => {
     const data = await loginUserApi({ email, password });
-    console.log('>> 1 >> loginUser - ', data);
     if (!data?.success) {
       return rejectWithValue(data);
     }
-    console.log('>> 2 >> loginUser - ', data);
     setCookie('accessToken', data.accessToken);
     localStorage.setItem('refreshToken', data.refreshToken);
     return data.user;
@@ -31,6 +29,8 @@ export const logoutUser = createAsyncThunk('user/logoutUser', async () => {
   }
   console.log('>> 2 >> logOutUser - ', data);
 });
+
+export const authUser = createAsyncThunk('user/auth', getUserApi);
 
 type TUserState = {
   userData: TUser | null;
@@ -68,19 +68,32 @@ export const userSlice = createSlice({
         state.loading = false;
       })
       .addCase(logoutUser.pending, (state) => {
-        state.isAuthChecked = false;
         state.loading = true;
         state.error = null;
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.isAuthChecked = false;
-        state.loading = true;
+        state.loading = false;
         state.error = action.error.message || 'Ошибка Logout';
       })
       .addCase(logoutUser.fulfilled, (state, action) => {
         state.isAuthChecked = false;
         state.userData = null;
         state.loading = false;
+      })
+      .addCase(authUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(authUser.rejected, (state, action) => {
+        state.loading = false;
+        state.isAuthChecked = true;
+        state.error = action.error.message || 'Ошибка аутентификации';
+      })
+      .addCase(authUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.isAuthChecked = true;
+        state.userData = action.payload.user;
       });
   }
 });

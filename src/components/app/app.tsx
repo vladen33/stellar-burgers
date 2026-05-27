@@ -18,12 +18,14 @@ import { Route, Routes } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from '../../services/store';
 import { fetchAllIngredients } from '../../services/slices/ingredientsSlice';
+import { authUser } from '../../services/slices/userSlice';
 import { ProtectedRoute } from '../ui/routes/protected-route';
 
 const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(authUser());
     dispatch(fetchAllIngredients());
   }, []);
   /** TODO: взять переменные из стора */
