@@ -2,10 +2,13 @@ import { FC, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { RootState, useDispatch, useSelector } from '../../services/store';
+import { useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
   const constructorItems = useSelector((state) => state.constructorData);
+  const userData = useSelector((state) => state.user.userData);
+  const navigate = useNavigate();
   // // /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
 
   const orderRequest = false;
@@ -13,7 +16,14 @@ export const BurgerConstructor: FC = () => {
   const orderModalData = null;
 
   const onOrderClick = () => {
-    if (!constructorItems.bun || orderRequest) return;
+    if (!userData) {
+      navigate('/login', { state: { from: '/' } });
+      return;
+    }
+    if (!constructorItems.bun || orderRequest) {
+      console.log('Не выбраны булки или orderRequest равен false');
+      return;
+    }
   };
   const closeOrderModal = () => {};
 

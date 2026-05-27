@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { TUser } from '@utils-types';
+import { TUser } from 'src/utils/types';
 import { loginUserApi, logoutApi, TRegisterData } from '@api';
-import { deleteCookie, setCookie } from '../utils/cookie';
+import { deleteCookie, setCookie } from '../../utils/cookie';
 // import { getUserApi } from '@api';
 
 export const loginUser = createAsyncThunk(

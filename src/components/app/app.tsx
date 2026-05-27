@@ -17,7 +17,7 @@ import { Preloader } from '@ui';
 import { Route, Routes } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from '../../services/store';
-import { fetchAllIngredients } from '../../services/ingredientsSlice';
+import { fetchAllIngredients } from '../../services/slices/ingredientsSlice';
 import { ProtectedRoute } from '../ui/routes/protected-route';
 
 const App = () => {
