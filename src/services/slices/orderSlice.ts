@@ -1,9 +1,10 @@
-import { orderBurgerApi } from '@api';
+import { getOrderByNumberApi, orderBurgerApi } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
 
 interface OrderState {
   order: Partial<TOrder> | null;
+  orderByNumber: TOrder | null;
   orderRequest: boolean;
   loading: boolean;
   error: string | null;
@@ -11,6 +12,7 @@ interface OrderState {
 
 const initialState: OrderState = {
   order: null,
+  orderByNumber: null,
   orderRequest: false,
   loading: false,
   error: null
@@ -19,6 +21,11 @@ const initialState: OrderState = {
 export const createOrder = createAsyncThunk(
   'createOrder',
   async (ingredients: string[]) => await orderBurgerApi(ingredients)
+);
+
+export const getOrderByNumber = createAsyncThunk(
+  'order/getOrderByNumder',
+  async (orderNumber: number) => getOrderByNumberApi(orderNumber)
 );
 
 export const orderSlice = createSlice({
@@ -39,6 +46,20 @@ export const orderSlice = createSlice({
       })
       .addCase(createOrder.fulfilled, (state, action) => {
         state.order = action.payload;
+        state.loading = false;
+        state.orderRequest = false;
+      })
+      .addCase(getOrderByNumber.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getOrderByNumber.rejected, (state, action) => {
+        state.loading = false;
+        state.orderRequest = false;
+        state.error = action.error.message || 'Ошибка создания заказа';
+      })
+      .addCase(getOrderByNumber.fulfilled, (state, action) => {
+        state.orderByNumber = action.payload.orders[0];
         state.loading = false;
         state.orderRequest = false;
       });
