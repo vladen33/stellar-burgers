@@ -24,7 +24,7 @@ export const createOrder = createAsyncThunk(
 );
 
 export const getOrderByNumber = createAsyncThunk(
-  'order/getOrderByNumder',
+  'order/getOrderByNumber',
   async (orderNumber: number) => getOrderByNumberApi(orderNumber)
 );
 
