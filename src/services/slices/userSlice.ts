@@ -1,6 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TUser } from 'src/utils/types';
-import { getUserApi, loginUserApi, logoutApi, TRegisterData } from '@api';
+import {
+  getUserApi,
+  loginUserApi,
+  logoutApi,
+  TRegisterData,
+  updateUserApi
+} from '@api';
 import { deleteCookie, setCookie } from '../../utils/cookie';
 // import { getUserApi } from '@api';
 
@@ -22,15 +28,21 @@ export const loginUser = createAsyncThunk(
 
 export const logoutUser = createAsyncThunk('user/logoutUser', async () => {
   const data = await logoutApi();
-  console.log('>> 1 >> logOutUser - ', data);
   if (data) {
     deleteCookie('accessToken');
     localStorage.removeItem('refreshToken');
   }
-  console.log('>> 2 >> logOutUser - ', data);
 });
 
-export const authUser = createAsyncThunk('user/auth', getUserApi);
+export const authUser = createAsyncThunk('user/authUser', getUserApi);
+
+export const updateUser = createAsyncThunk(
+  'user/updateUser',
+  async (data: Partial<TRegisterData>) => {
+    const response = await updateUserApi(data);
+    return response.user;
+  }
+);
 
 type TUserState = {
   userData: TUser | null;
@@ -94,6 +106,19 @@ export const userSlice = createSlice({
         state.loading = false;
         state.isAuthChecked = true;
         state.userData = action.payload.user;
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.userData = action.payload;
+        state.loading = false;
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          action.error.message || 'Ошибка обновления данных пользователя.';
       });
   }
 });
