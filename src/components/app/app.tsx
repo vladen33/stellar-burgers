@@ -36,6 +36,9 @@ const App = () => {
     navigate(-1);
   };
 
+  console.log('App rendered, background = ', background);
+  console.log('location.state = ', location.state);
+  console.log('isModalOpen = ', !!background);
   return (
     <div className={styles.app}>
       <AppHeader />
