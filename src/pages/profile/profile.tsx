@@ -4,8 +4,6 @@ import { useDispatch, useSelector } from '../../services/store';
 import { updateUser } from '../../services/slices/userSlice';
 
 export const Profile: FC = () => {
-  /** TODO: взять переменную из стора */
-  // const user = {name: '', email: '' };
   const user = useSelector((state) => state.user.userData);
   const dispatch = useDispatch();
 
@@ -33,7 +31,16 @@ export const Profile: FC = () => {
   const handleSubmit = (e: SyntheticEvent) => {
     console.log('formValue - changed');
     e.preventDefault();
-    dispatch(updateUser(formValue));
+    dispatch(updateUser(formValue))
+      .unwrap()
+      .then(() => {
+        // Сбрасываем форму ТОЛЬКО после успешного завершения запроса
+        setFormValue({
+          name: formValue.name,
+          email: formValue.email,
+          password: ''
+        });
+      });
   };
 
   const handleCancel = (e: SyntheticEvent) => {

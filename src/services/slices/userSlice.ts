@@ -4,6 +4,7 @@ import {
   getUserApi,
   loginUserApi,
   logoutApi,
+  registerUserApi,
   TRegisterData,
   updateUserApi
 } from '@api';
@@ -23,6 +24,23 @@ export const loginUser = createAsyncThunk(
     setCookie('accessToken', data.accessToken);
     localStorage.setItem('refreshToken', data.refreshToken);
     return data.user;
+  }
+);
+
+export const registerUser = createAsyncThunk(
+  'user/registerUser',
+  async (registerData: TRegisterData, { rejectWithValue }) => {
+    try {
+      const responseData = await registerUserApi(registerData);
+      // Сохраняем токены
+      localStorage.setItem('refreshToken', responseData.refreshToken);
+      setCookie('accessToken', responseData.accessToken);
+      return responseData.user;
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error ? error.message : 'Ошибка регистрации';
+      return rejectWithValue(message);
+    }
   }
 );
 
@@ -64,6 +82,20 @@ export const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(registerUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userData = action.payload;
+        state.isAuthChecked = true;
+      })
+      .addCase(registerUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Ошибка регистрации';
+        state.isAuthChecked = true;
+      })
       .addCase(loginUser.pending, (state) => {
         state.isAuthChecked = false;
         state.loading = true;
@@ -84,12 +116,12 @@ export const userSlice = createSlice({
         state.error = null;
       })
       .addCase(logoutUser.rejected, (state, action) => {
-        state.isAuthChecked = false;
+        state.isAuthChecked = true;
         state.loading = false;
         state.error = action.error.message || 'Ошибка Logout';
       })
       .addCase(logoutUser.fulfilled, (state, action) => {
-        state.isAuthChecked = false;
+        state.isAuthChecked = true;
         state.userData = null;
         state.loading = false;
       })

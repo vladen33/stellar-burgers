@@ -7,6 +7,7 @@ interface OrderState {
   orders: TOrder[];
   orderByNumber: TOrder | null;
   orderRequest: boolean;
+  orderModalData: TOrder | null;
   loading: boolean;
   error: string | null;
 }
@@ -16,6 +17,7 @@ const initialState: OrderState = {
   orders: [],
   orderByNumber: null,
   orderRequest: false,
+  orderModalData: null,
   loading: false,
   error: null
 };
@@ -54,6 +56,10 @@ export const orderSlice = createSlice({
         state.order = action.payload;
         state.loading = false;
         state.orderRequest = false;
+        state.orderModalData = {
+          ...state.order,
+          ingredients: []
+        } as TOrder;
       })
       .addCase(getOrderByNumber.pending, (state) => {
         state.loading = true;

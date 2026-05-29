@@ -12,9 +12,7 @@ export const BurgerConstructor: FC = () => {
   const constructorItems = useSelector((state) => state.constructorData);
   const userData = useSelector((state) => state.user.userData);
   const orderRequest = useSelector((state) => state.order.orderRequest);
-  // // /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
-
-  const orderModalData = null;
+  const orderModalData = useSelector((state) => state.order.orderModalData);
 
   const onOrderClick = () => {
     if (!userData) {
@@ -44,8 +42,6 @@ export const BurgerConstructor: FC = () => {
       ),
     [constructorItems]
   );
-
-  // return null;
 
   return (
     <BurgerConstructorUI
