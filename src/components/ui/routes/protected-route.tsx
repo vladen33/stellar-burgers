@@ -4,10 +4,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Preloader } from '@ui';
 
 type ProtectedRouteProps = {
-  children: ReactElement;
+  element: ReactElement;
 };
 
-export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
+export const ProtectedRoute = ({ element }: ProtectedRouteProps) => {
   const userData = useSelector((state) => state.user.userData);
   const isAuthChecked = useSelector((state) => state.user.isAuthChecked);
   const navigate = useNavigate();
@@ -19,11 +19,10 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
         state: { from: location }
       });
     }
-  }, [navigate, userData]);
-  console.log('isAuthChecked = ', isAuthChecked);
+  }, [userData]);
   if (!isAuthChecked) {
     //TODO Разобраться с прелоадером
-    // return <Preloader />;
+    //return <Preloader />;
   }
-  return children;
+  return element;
 };

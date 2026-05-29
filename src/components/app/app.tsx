@@ -36,9 +36,6 @@ const App = () => {
     navigate(-1);
   };
 
-  console.log('App rendered, background = ', background);
-  console.log('location.state = ', location.state);
-  console.log('isModalOpen = ', !!background);
   return (
     <div className={styles.app}>
       <AppHeader />
@@ -46,13 +43,12 @@ const App = () => {
       <Routes location={background || location}>
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />
-        <Route path='/login' element={<ProtectedRoute><Login /></ProtectedRoute>}/>
-        <Route path='/register' element={<ProtectedRoute><Register /></ProtectedRoute>}/>
-        <Route path='/forgot-password' element={<ProtectedRoute><ForgotPassword /></ProtectedRoute>}/>
-        <Route path='/reset-password' element={<ProtectedRoute><ResetPassword /></ProtectedRoute>}/>
-        <Route path='/profile' element={<ProtectedRoute><Profile /></ProtectedRoute>}/>
-        <Route path='/profile/orders' element={<ProtectedRoute><ProfileOrders /></ProtectedRoute>}/>
-
+        <Route path='/login' element={<ProtectedRoute element={<Login />} />} />
+        <Route path='/register' element={<ProtectedRoute element={<Register />} />} />
+        <Route path='/forgot-password' element={<ProtectedRoute element={<ForgotPassword />} />} />
+        <Route path='/reset-password' element={<ProtectedRoute element={<ResetPassword />} />} />
+        <Route path='/profile' element={<ProtectedRoute element={<Profile />} />} />
+        <Route path='/profile/orders' element={<ProtectedRoute element={<ProfileOrders />} />} />
         <Route path='/feed/:number' element={<OrderInfo />} />
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
         <Route path='/profile/orders/:number' element={<OrderInfo />} />
@@ -74,6 +70,18 @@ const App = () => {
               <Modal title='Детали ингредиента' onClose={handleCloseModal}>
                 <IngredientDetails />
               </Modal>
+            }
+          />
+          <Route
+            path='/profile/orders/:number'
+            element={
+              <ProtectedRoute
+                element={
+                  <Modal title='Информация о заказе' onClose={handleCloseModal}>
+                    <OrderInfo />
+                  </Modal>
+                }
+              />
             }
           />
         </Routes>
