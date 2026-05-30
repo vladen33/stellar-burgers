@@ -6,9 +6,10 @@ import { BurgerIngredients } from '@components';
 import { BurgerConstructor } from '@components';
 import { Preloader } from '@ui';
 import { FC } from 'react';
+import { getIngredientsIsLoadingSelector } from '@selectors';
 
 export const ConstructorPage: FC = () => {
-  const isLoading = useSelector((state) => state.ingredients.loading);
+  const isLoading = useSelector(getIngredientsIsLoadingSelector);
   return (
     <main className={styles.containerMain}>
       <h1

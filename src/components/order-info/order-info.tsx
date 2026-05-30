@@ -5,15 +5,14 @@ import { TIngredient, TOrder } from '@utils-types';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from '../../services/store';
 import { getOrderByNumber } from '../../services/slices/orderSlice';
+import { getIngredientsSelector, getOrderByNumberSelector } from '@selectors';
 
 export const OrderInfo: FC = () => {
   /** TODO: взять переменные orderData и ingredients из стора */
   const { number } = useParams<{ number: string }>();
   const dispatch = useDispatch();
-  const orderData = useSelector((state) => state.order.orderByNumber);
-  const ingredients: TIngredient[] = useSelector(
-    (state) => state.ingredients.ingredients
-  );
+  const orderData = useSelector(getOrderByNumberSelector);
+  const ingredients: TIngredient[] = useSelector(getIngredientsSelector);
 
   useEffect(() => {
     if (number) {

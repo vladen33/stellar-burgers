@@ -3,6 +3,7 @@ import { RegisterUI } from '@ui-pages';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from '../../services/store';
 import { registerUser } from '../../services/slices/userSlice';
+import { getUserDataSelector } from '@selectors';
 
 export const Register: FC = () => {
   const [userName, setUserName] = useState('');
@@ -12,7 +13,7 @@ export const Register: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const userData = useSelector((state) => state.user.userData);
+  const userData = useSelector(getUserDataSelector);
 
   useEffect(() => {
     if (userData) {
