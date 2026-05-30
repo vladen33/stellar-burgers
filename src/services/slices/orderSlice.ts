@@ -39,7 +39,11 @@ export const getOrders = createAsyncThunk('order/getOrders', async () =>
 export const orderSlice = createSlice({
   name: 'order/createOrder',
   initialState,
-  reducers: {},
+  reducers: {
+    clearOrderModalData: (state) => {
+      state.orderModalData = null;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(createOrder.pending, (state) => {
@@ -58,7 +62,8 @@ export const orderSlice = createSlice({
         state.orderRequest = false;
         state.orderModalData = {
           ...state.order,
-          ingredients: []
+          ingredients: [],
+          number: action.payload.order.number
         } as TOrder;
       })
       .addCase(getOrderByNumber.pending, (state) => {
@@ -92,3 +97,4 @@ export const orderSlice = createSlice({
 });
 
 export const orderReducer = orderSlice.reducer;
+export const { clearOrderModalData } = orderSlice.actions;
