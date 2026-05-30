@@ -48,9 +48,39 @@ const App = () => {
         <Route path='/reset-password' element={<ProtectedRoute onlyUnAuth element={<ResetPassword />} />} />
         <Route path='/profile' element={<ProtectedRoute element={<Profile />} />} />
         <Route path='/profile/orders' element={<ProtectedRoute element={<ProfileOrders />} />} />
-        <Route path='/feed/:number' element={<OrderInfo />} />
-        <Route path='/ingredients/:id' element={<IngredientDetails />} />
-        <Route path='/profile/orders/:number' element={<ProtectedRoute element={<OrderInfo />} />} />
+        <Route
+          path='/feed/:number'
+          element={
+            <div className={styles.detailPageWrap}>
+              <p className={`text text_type_main-large ${styles.detailHeader}`}>
+                Информация о заказе
+              </p>
+              <OrderInfo />
+            </div>
+          }
+        />
+        <Route
+          path='/ingredients/:id'
+          element={
+            <div className={styles.detailPageWrap}>
+              <p className={`text text_type_main-large ${styles.detailHeader}`}>
+                Детали ингредиента
+              </p>
+              <IngredientDetails />
+            </div>
+          }
+        />
+        <Route
+          path='/profile/orders/:number'
+          element={
+            <div className={styles.detailPageWrap}>
+              <p className={`text text_type_main-large ${styles.detailHeader}`}>
+                Информация о заказе
+              </p>
+              <OrderInfo />
+            </div>
+          }
+        />
         <Route path='*' element={<NotFound404 />} />
       </Routes>
       {background && (
