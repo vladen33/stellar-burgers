@@ -1,24 +1,49 @@
 import { FC, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
+import { useDispatch, useSelector } from '../../services/store';
+import { useNavigate } from 'react-router-dom';
+import {
+  clearOrderModalData,
+  createOrder
+} from '../../services/slices/orderSlice';
+import { clearConstructor } from '../../services/slices/constructorSlice';
+import {
+  getConstructorDataSelector,
+  getOrderModalDataSelector,
+  getOrderRequestSelector,
+  getUserDataSelector
+} from '@selectors';
 
 export const BurgerConstructor: FC = () => {
-  /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
-  const constructorItems = {
-    bun: {
-      price: 0
-    },
-    ingredients: []
-  };
-
-  const orderRequest = false;
-
-  const orderModalData = null;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const constructorItems = useSelector(getConstructorDataSelector);
+  const userData = useSelector(getUserDataSelector);
+  const orderRequest = useSelector(getOrderRequestSelector);
+  const orderModalData = useSelector(getOrderModalDataSelector);
 
   const onOrderClick = () => {
-    if (!constructorItems.bun || orderRequest) return;
+    if (!userData) {
+      navigate('/login', { state: { from: '/' } });
+      return;
+    }
+    if (!constructorItems.bun || orderRequest) {
+      console.log('Не выбраны булки или оформление заказа уже идет');
+      return;
+    }
+    const bunId: string = constructorItems.bun._id;
+    const ingredientsId: string[] = constructorItems.ingredients.map(
+      (val) => val._id
+    );
+    dispatch(createOrder([bunId, ...ingredientsId, bunId]))
+      .unwrap()
+      .then(() => dispatch(clearConstructor()));
   };
-  const closeOrderModal = () => {};
+  const closeOrderModal = () => {
+    dispatch(clearConstructor());
+    dispatch(clearOrderModalData());
+  };
 
   const price = useMemo(
     () =>
@@ -29,8 +54,6 @@ export const BurgerConstructor: FC = () => {
       ),
     [constructorItems]
   );
-
-  return null;
 
   return (
     <BurgerConstructorUI
