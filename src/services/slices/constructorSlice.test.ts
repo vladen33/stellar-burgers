@@ -1,7 +1,10 @@
 import {
   addIngredient,
   constructorReducer,
-  deleteIngredient
+  deleteIngredient,
+  moveDownIngredient,
+  moveUpIngredient,
+  clearConstructor
 } from './constructorSlice';
 
 describe('Проверка работы слайса burgerConstructor', () => {
@@ -26,7 +29,8 @@ describe('Проверка работы слайса burgerConstructor', () => {
 
   const mockBunIngredient = {
     ...mockAbstractIngredient,
-    type: 'bun'
+    type: 'bun',
+    id: 'id-bun'
   };
 
   const mockMainIngredient1 = {
@@ -93,5 +97,42 @@ describe('Проверка работы слайса burgerConstructor', () => {
     expect(resState.ingredients).toHaveLength(2);
     expect(resState.ingredients[0]).toEqual(mockMainIngredient2);
     expect(resState.ingredients[1]).toEqual(mockSauceIngredient1);
+  });
+
+  test('Проверка экшена изменение порядка ингредиентов', () => {
+    const startState = {
+      ...initialState,
+      ingredients: [
+        mockMainIngredient1,
+        mockMainIngredient2,
+        mockSauceIngredient1,
+        mockSauceIngredient2
+      ]
+    };
+    const finishState = {
+      ...initialState,
+      ingredients: [
+        mockMainIngredient2,
+        mockMainIngredient1,
+        mockSauceIngredient2,
+        mockSauceIngredient1
+      ]
+    };
+    let resState = constructorReducer(startState, moveDownIngredient(0));
+    resState = constructorReducer(resState, moveUpIngredient(3));
+    expect(resState).toEqual(finishState);
+  });
+
+  test('Проверка экшена очистки конструктора', () => {
+    const startState = {
+      bun: mockBunIngredient,
+      ingredients: [mockMainIngredient1, mockSauceIngredient1]
+    };
+    const finishState = {
+      bun: null,
+      ingredients: []
+    };
+    const resState = constructorReducer(startState, clearConstructor());
+    expect(resState).toEqual(finishState);
   });
 });
