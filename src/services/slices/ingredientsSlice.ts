@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TIngredient } from 'src/utils/types';
-import { getIngredientsApi } from '@api';
+// import { getIngredientsApi } from '@api';
+import { getIngredientsApi } from '../../utils/burger-api';
 
 type TIngredientsState = {
   ingredients: Array<TIngredient>;

@@ -90,7 +90,7 @@
     "url-loader": "^4.1.1"
   },
   "scripts": {
-    "start": "webpack serve --mode=development --port 7555",
+    "start": "webpack serve --mode=development --port 7777",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ./src",
