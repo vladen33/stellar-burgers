@@ -60,9 +60,9 @@ describe('Проверка работы слайса burgerConstructor', () => {
       type: addIngredient.type,
       payload: { ...mockBunIngredient, id: 'randomId' }
     };
-    const state = constructorReducer(initialState, action);
-    expect(state.bun).toEqual({ ...mockBunIngredient, id: 'randomId' });
-    expect(state.ingredients).toHaveLength(0);
+    const finalState = constructorReducer(initialState, action);
+    expect(finalState.bun).toEqual({ ...mockBunIngredient, id: 'randomId' });
+    expect(finalState.ingredients).toHaveLength(0);
   });
 
   test('Проверка экшена добавления дополнительных ингредиентов (main, sauce)', () => {
@@ -109,7 +109,7 @@ describe('Проверка работы слайса burgerConstructor', () => {
         mockSauceIngredient2
       ]
     };
-    const finishState = {
+    const finalState = {
       ...initialState,
       ingredients: [
         mockMainIngredient2,
@@ -120,7 +120,7 @@ describe('Проверка работы слайса burgerConstructor', () => {
     };
     let resState = constructorReducer(startState, moveDownIngredient(0));
     resState = constructorReducer(resState, moveUpIngredient(3));
-    expect(resState).toEqual(finishState);
+    expect(resState).toEqual(finalState);
   });
 
   test('Проверка экшена очистки конструктора', () => {
@@ -128,11 +128,11 @@ describe('Проверка работы слайса burgerConstructor', () => {
       bun: mockBunIngredient,
       ingredients: [mockMainIngredient1, mockSauceIngredient1]
     };
-    const finishState = {
+    const finalState = {
       bun: null,
       ingredients: []
     };
     const resState = constructorReducer(startState, clearConstructor());
-    expect(resState).toEqual(finishState);
+    expect(resState).toEqual(finalState);
   });
 });
