@@ -1,6 +1,12 @@
 import { fetchAllIngredients, ingredientsReducer } from './ingredientsSlice';
 import { TIngredient } from '../../utils/types';
-import { feedReducer, fetchOrdersAll } from './feedSlice';
+import {
+  mockBunIngredient,
+  mockMainIngredient1,
+  mockMainIngredient2,
+  mockSauceIngredient1,
+  mockSauceIngredient2
+} from './mockData';
 
 describe('Проверка асинхронного экшена fetchAllIngredients', () => {
   const initialState = {
@@ -9,41 +15,12 @@ describe('Проверка асинхронного экшена fetchAllIngredi
     error: null
   };
 
-  const mockAbstractIngredient: TIngredient = {
-    _id: 'any-id',
-    name: 'any-name',
-    type: 'any-type',
-    proteins: 1,
-    fat: 1,
-    carbohydrates: 1,
-    calories: 1,
-    price: 1,
-    image: '',
-    image_mobile: '',
-    image_large: ''
-  };
-  const mockBunIngredient: TIngredient = {
-    ...mockAbstractIngredient,
-    _id: '123',
-    name: 'Булка',
-    type: 'bun'
-  };
-  const mockMainIngredient: TIngredient = {
-    ...mockAbstractIngredient,
-    _id: '456',
-    name: 'Основная начинка',
-    type: 'main'
-  };
-  const mockSauceIngredient: TIngredient = {
-    ...mockAbstractIngredient,
-    _id: '789',
-    name: 'Соус',
-    type: 'sauce'
-  };
   const mockIngredientList: TIngredient[] = [
     mockBunIngredient,
-    mockMainIngredient,
-    mockSauceIngredient
+    mockMainIngredient1,
+    mockMainIngredient2,
+    mockSauceIngredient1,
+    mockSauceIngredient2
   ];
 
   test('При вызове экшена Request - loading меняется на true, error на null', () => {

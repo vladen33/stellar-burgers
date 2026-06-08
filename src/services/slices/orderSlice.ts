@@ -7,7 +7,7 @@ import {
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
 
-interface OrderState {
+export interface TOrderState {
   order: Partial<TOrder> | null;
   orders: TOrder[];
   orderByNumber: TOrder | null;
@@ -17,7 +17,7 @@ interface OrderState {
   error: string | null;
 }
 
-const initialState: OrderState = {
+const initialState: TOrderState = {
   order: null,
   orders: [],
   orderByNumber: null,

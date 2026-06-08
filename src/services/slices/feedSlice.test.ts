@@ -1,5 +1,6 @@
 import { fetchOrdersAll, feedReducer } from './feedSlice';
 import { TOrder } from 'src/utils/types';
+import { mockOrder1, mockOrder2 } from './mockData';
 
 describe('Проверка асинхронного экшена fetchOrdersAll', () => {
   const initialState = {
@@ -8,25 +9,6 @@ describe('Проверка асинхронного экшена fetchOrdersAll'
     totalToday: 0,
     loading: false,
     error: null
-  };
-
-  const mockOrder1: TOrder = {
-    _id: 'any-id-1',
-    status: 'done',
-    name: 'Космический бургер',
-    createdAt: '2026-06-06',
-    updatedAt: '2026-06-06',
-    number: 55555,
-    ingredients: ['id-bun', 'id-main-1', 'id-sauce-1']
-  };
-  const mockOrder2: TOrder = {
-    _id: 'any-id-2',
-    status: 'done',
-    name: 'Марсиансткий бургер',
-    createdAt: '2026-06-07',
-    updatedAt: '2026-06-07',
-    number: 77777,
-    ingredients: ['id-bun', 'id-main-2', 'id-sauce-2']
   };
 
   test('При вызове экшена Request - loading меняется на true, error на null', () => {

@@ -7,52 +7,18 @@ import {
   clearConstructor
 } from './constructorSlice';
 
+import {
+  mockBunIngredient,
+  mockMainIngredient1,
+  mockMainIngredient2,
+  mockSauceIngredient1,
+  mockSauceIngredient2
+} from './mockData';
+
 describe('Проверка работы слайса burgerConstructor', () => {
   const initialState = {
     bun: null,
     ingredients: []
-  };
-  const mockAbstractIngredient = {
-    _id: 'AnyId',
-    name: 'AnuName',
-    type: 'abstractType',
-    proteins: 1,
-    fat: 1,
-    carbohydrates: 1,
-    calories: 1,
-    price: 1,
-    image: 'Image link',
-    image_mobile: 'Image link for mobile',
-    image_large: 'Image link for desktop',
-    __v: 0
-  };
-
-  const mockBunIngredient = {
-    ...mockAbstractIngredient,
-    type: 'bun',
-    id: 'id-bun'
-  };
-
-  const mockMainIngredient1 = {
-    ...mockAbstractIngredient,
-    type: 'main',
-    id: 'id-main-1'
-  };
-
-  const mockMainIngredient2 = {
-    ...mockMainIngredient1,
-    id: 'id-main-2'
-  };
-
-  const mockSauceIngredient1 = {
-    ...mockAbstractIngredient,
-    type: 'sauce',
-    id: 'id-sauce-1'
-  };
-
-  const mockSauceIngredient2 = {
-    ...mockAbstractIngredient,
-    id: 'id-sauce-2'
   };
 
   test('Проверка экшена добавления главного ингредиента (bun)', () => {
