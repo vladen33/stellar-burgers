@@ -21,6 +21,14 @@ describe('Проверка работы слайса burgerConstructor', () => {
     ingredients: []
   };
 
+  test('Проверка constructorReducer при вызове с неизвестным экшеном', () => {
+    const startState = { ...initialState };
+    const finalState = constructorReducer(startState, {
+      type: 'UNKNOWN_ACTION'
+    });
+    expect(startState).toEqual(finalState);
+  });
+
   test('Проверка экшена добавления главного ингредиента (bun)', () => {
     const action = {
       type: addIngredient.type,

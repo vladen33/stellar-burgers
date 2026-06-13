@@ -1,5 +1,4 @@
 import { fetchOrdersAll, feedReducer } from './feedSlice';
-import { TOrder } from 'src/utils/types';
 import { mockOrder1, mockOrder2 } from './mockData';
 
 describe('Проверка асинхронного экшена fetchOrdersAll', () => {
@@ -10,6 +9,14 @@ describe('Проверка асинхронного экшена fetchOrdersAll'
     loading: false,
     error: null
   };
+
+  test('Проверка feedReducer при вызове с неизвестным экшеном', () => {
+    const startState = { ...initialState };
+    const finalState = feedReducer(startState, {
+      type: 'UNKNOWN_ACTION'
+    });
+    expect(startState).toEqual(finalState);
+  });
 
   test('При вызове экшена Request - loading меняется на true, error на null', () => {
     const startState = { ...initialState, error: 'Ошибка' };

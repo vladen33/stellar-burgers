@@ -23,6 +23,14 @@ describe('Проверка асинхронного экшена fetchAllIngredi
     mockSauceIngredient2
   ];
 
+  test('Проверка ingredientsReducer при вызове с неизвестным экшеном', () => {
+    const startState = { ...initialState };
+    const finalState = ingredientsReducer(startState, {
+      type: 'UNKNOWN_ACTION'
+    });
+    expect(startState).toEqual(finalState);
+  });
+
   test('При вызове экшена Request - loading меняется на true, error на null', () => {
     const startState = { ...initialState, error: 'Ошибка' };
     const action = { type: fetchAllIngredients.pending.type };

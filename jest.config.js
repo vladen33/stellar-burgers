@@ -33,6 +33,10 @@ export default {
     '<rootDir>/src/**/*.{ts,tsx}',
     '!<rootDir>/src/**/*.d.ts'
   ],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/tests/' // Игнорируем папку с Playwright‑тестами
+  ],
   coverageDirectory: 'coverage',
   coverageProvider: 'v8'
 };

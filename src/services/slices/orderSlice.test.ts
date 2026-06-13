@@ -5,16 +5,8 @@ import {
   getOrderByNumber,
   getOrders
 } from './orderSlice';
-import {
-  mockBunIngredient,
-  mockMainIngredient1,
-  mockOrder1,
-  mockOrder2,
-  mockSauceIngredient1
-} from './mockData';
-import { fetchAllIngredients, ingredientsReducer } from './ingredientsSlice';
+import { mockOrder1, mockOrder2 } from './mockData';
 import { TOrder } from '@utils-types';
-// import {T} from '../../utils/burger-api';
 
 describe('Проверка асинхронных экшенов: createOrder, getOrderByNumber, getOrders', () => {
   const initialState: TOrderState = {
@@ -28,6 +20,14 @@ describe('Проверка асинхронных экшенов: createOrder, g
   };
 
   describe('Проверка асинхронного экшена createOrder', () => {
+    test('Проверка orderReducer при вызове с неизвестным экшеном', () => {
+      const startState = { ...initialState };
+      const finalState = orderReducer(startState, {
+        type: 'UNKNOWN_ACTION'
+      });
+      expect(startState).toEqual(finalState);
+    });
+
     test('При вызове экшена Request - loading меняется на true, error на null, orderRequest на true', () => {
       const startState = { ...initialState, error: 'Ошибка' };
       const action = { type: createOrder.pending.type };
@@ -36,8 +36,6 @@ describe('Проверка асинхронных экшенов: createOrder, g
       expect(finalState.orderRequest).toBe(true);
       expect(finalState.error).toBeNull();
     });
-
-
 
     test('Проверка при получении отрицательного ответа (rejected)', () => {
       const startState = { ...initialState, loading: true };
