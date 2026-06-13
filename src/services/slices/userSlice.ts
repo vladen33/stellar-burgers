@@ -1,5 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TUser } from 'src/utils/types';
+// import {
+//   getUserApi,
+//   loginUserApi,
+//   logoutApi,
+//   registerUserApi,
+//   TRegisterData,
+//   updateUserApi
+// } from '@api';
 import {
   getUserApi,
   loginUserApi,
@@ -7,9 +15,8 @@ import {
   registerUserApi,
   TRegisterData,
   updateUserApi
-} from '@api';
+} from '../../utils/burger-api';
 import { deleteCookie, setCookie } from '../../utils/cookie';
-// import { getUserApi } from '@api';
 
 export const loginUser = createAsyncThunk(
   'user/loginUser',
