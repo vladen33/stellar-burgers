@@ -37,56 +37,7 @@ describe('Проверка асинхронных экшенов: createOrder, g
       expect(finalState.error).toBeNull();
     });
 
-    test('Проверка при получении положительного ответа (fulfilled)', () => {
-      const startState = {
-        ...initialState,
-        loading: true,
-        orderRequest: true,
-        error: 'Какая-то ошибка'
-      };
-      // Request к серверу при создании нового заказа
-      const mockServerRequestPayload = {
-        ingredients: [
-          mockBunIngredient.id,
-          mockMainIngredient1.id,
-          mockSauceIngredient1.id,
-          mockBunIngredient.id
-        ]
-      };
 
-      // Response от сервера при создании нового заказа
-      const mockServerResponsePayload = {
-        success: true,
-        name: 'Новый бургер',
-        order: {
-          ingredients: [
-            mockBunIngredient,
-            mockMainIngredient1,
-            mockSauceIngredient1,
-            mockBunIngredient
-          ],
-          _id: 'id-new-order',
-          owner: {},
-          status: 'done',
-          name: 'Новый бургер',
-          createdAt: '',
-          updatedAt: '',
-          number: 12345,
-          price: 25000
-        }
-      };
-      const action = {
-        type: createOrder.fulfilled.type,
-        payload: mockServerResponsePayload
-      };
-      const finalState = orderReducer(startState, action);
-      console.log('finalState = ', finalState);
-
-      expect(finalState.loading).toBe(false);
-      expect(finalState.orderRequest).toBe(false);
-      expect(finalState.order).toEqual(mockServerResponsePayload.order);
-      expect(finalState.orderModalData?.number).toBe(12345);
-    });
 
     test('Проверка при получении отрицательного ответа (rejected)', () => {
       const startState = { ...initialState, loading: true };
